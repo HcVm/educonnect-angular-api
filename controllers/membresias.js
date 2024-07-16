@@ -23,12 +23,12 @@ exports.obtenerMembresiaPorId = async (req, res, next) => {
 };
 
 exports.crearMembresia = async (req, res, next) => {
-  const { nombre, descripcion, precio, duracionDias } = req.body;
+  const { nombre, descripcion, precio, fecha_inicio, fecha_fin } = req.body;
 
   try {
     const [result] = await pool.query(
-      'INSERT INTO membresias (nombre, descripcion, precio, duracion_dias) VALUES (?, ?, ?, ?)',
-      [nombre, descripcion, precio, duracionDias]
+      'INSERT INTO membresias (nombre, descripcion, precio, fecha_inicio, fecha_fin) VALUES (?, ?, ?, ?)',
+      [nombre, descripcion, precio, fecha_inicio, fecha_fin]
     );
     res.status(201).json({
       mensaje: 'Membresía creada exitosamente',
@@ -41,12 +41,12 @@ exports.crearMembresia = async (req, res, next) => {
 
 exports.actualizarMembresia = async (req, res, next) => {
   const { id } = req.params;
-  const { nombre, descripcion, precio, duracionDias } = req.body;
+  const { nombre, descripcion, precio, fecha_inicio, fecha_fin } = req.body;
 
   try {
     const [result] = await pool.query(
-      'UPDATE membresias SET nombre = ?, descripcion = ?, precio = ?, duracion_dias = ? WHERE id = ?',
-      [nombre, descripcion, precio, duracionDias, id]
+      'UPDATE membresias SET nombre = ?, descripcion = ?, precio = ?, fecha_inicio = ?, fecha_fin = ? WHERE id = ?',
+      [nombre, descripcion, precio, fecha_inicio, fecha_fin, id]
     );
     if (result.affectedRows === 0) {
       return res.status(404).json({ mensaje: 'Membresía no encontrada' });
