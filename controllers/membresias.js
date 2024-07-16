@@ -27,7 +27,7 @@ exports.crearMembresia = async (req, res, next) => {
 
   try {
     const [result] = await pool.query(
-      'INSERT INTO membresias (nombre, descripcion, precio, fecha_inicio, fecha_fin) VALUES (?, ?, ?, ?)',
+      'INSERT INTO membresias (nombre, descripcion, precio, fecha_inicio, fecha_fin) VALUES (?, ?, ?, ?, ?)',
       [nombre, descripcion, precio, fecha_inicio, fecha_fin]
     );
     res.status(201).json({
