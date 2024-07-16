@@ -1,12 +1,12 @@
 const pool = require('../config/database');
 
 exports.crearAsesor = async (req, res, next) => {
-  const { usuarioId, especializacion, disponibilidad, tarifa } = req.body;
+  const { usuarioId, especializacion, disponibilidad } = req.body;
 
   try {
     const [result] = await pool.query(
-      'INSERT INTO asesores (usuario_id, especializacion, disponibilidad, tarifa) VALUES (?, ?, ?, ?)',
-      [usuarioId, especializacion, disponibilidad, tarifa]
+      'INSERT INTO asesores (usuario_id, especializacion, disponibilidad) VALUES (?, ?, ?)',
+      [usuarioId, especializacion, disponibilidad]
     );
 
     res.status(201).json({
@@ -55,12 +55,12 @@ exports.obtenerAsesores = async (req, res, next) => {
 
 exports.actualizarAsesor = async (req, res, next) => {
   const { id } = req.params;
-  const { especializacion, disponibilidad, tarifa } = req.body;
+  const { especializacion, disponibilidad } = req.body;
 
   try {
     const [result] = await pool.query(
-      'UPDATE asesores SET especializacion = ?, disponibilidad = ?, tarifa = ? WHERE id = ?',
-      [especializacion, disponibilidad, tarifa, id]
+      'UPDATE asesores SET especializacion = ?, disponibilidad = ? WHERE id = ?',
+      [especializacion, disponibilidad, id]
     );
     if (result.affectedRows === 0) {
       return res.status(404).json({ mensaje: 'Asesor no encontrado' });
