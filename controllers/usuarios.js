@@ -11,14 +11,14 @@ exports.crearUsuario = async (req, res, next) => {
       [nombre, correo, hashedPassword, tipo]
     );
 
-    console.log("Usuario creado con éxito:", result.insertId); // Log después de crear
+    console.log("Usuario creado con éxito:", result.insertId);
     res.status(201).json({ 
       mensaje: 'Usuario creado exitosamente',
       usuarioId: result.insertId 
     });
   } catch (error) {
 
-    console.error("Error al crear usuario:", error); // Log del error
+    console.error("Error al crear usuario:", error);
     if (error.code === 'ER_DUP_ENTRY') {
       return res.status(409).json({ mensaje: 'El correo electrónico ya está registrado' });
     }
@@ -83,31 +83,31 @@ exports.iniciarSesion = async (req, res, next) => {
   const { correo, contraseña } = req.body;
 
   try {
-    console.log("Intentando iniciar sesión con correo:", correo); // Log antes de la consulta
+    console.log("Intentando iniciar sesión con correo:", correo); 
 
     const [rows] = await pool.query('SELECT * FROM usuarios WHERE correo = ?', [correo]);
 
     if (rows.length === 0) {
-      console.warn("Credenciales inválidas: Usuario no encontrado para el correo:", correo); // Log de advertencia
+      console.warn("Credenciales inválidas: Usuario no encontrado para el correo:", correo);
       return res.status(401).json({ mensaje: 'Credenciales inválidas' });
     }
 
     const usuario = rows[0];
 
-    console.log("Verificando contraseña para usuario:", usuario.id); // Log antes de verificar la contraseña
+    console.log("Verificando contraseña para usuario:", usuario.id); 
 
     const validPassword = await bcrypt.compare(contraseña, usuario.contraseña);
 
     if (!validPassword) {
-      console.warn("Credenciales inválidas: Contraseña incorrecta para el usuario:", usuario.id); // Log de advertencia
+      console.warn("Credenciales inválidas: Contraseña incorrecta para el usuario:", usuario.id);
       return res.status(401).json({ mensaje: 'Credenciales inválidas' });
     }
 
-    console.log("Inicio de sesión exitoso para usuario:", usuario.id); // Log de éxito
+    console.log("Inicio de sesión exitoso para usuario:", usuario.id);
 
     res.json({ mensaje: 'Inicio de sesión exitoso', usuario }); 
   } catch (error) {
-    console.error("Error al iniciar sesión:", error); // Log del error
+    console.error("Error al iniciar sesión:", error);
     next(error);
   }
 };

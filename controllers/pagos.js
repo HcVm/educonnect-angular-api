@@ -9,18 +9,6 @@ exports.registrarPago = async (req, res, next) => {
       [usuarioId, membresiaId, monto, fechaPago, metodoPago]
     );
 
-    const [membresia] = await pool.query('SELECT * FROM membresias WHERE id = ?', [membresiaId]);
-    const duracionDias = membresia[0].duracion_dias;
-
-    const fechaInicio = new Date(fechaPago);
-    const fechaFin = new Date(fechaPago);
-    fechaFin.setDate(fechaFin.getDate() + duracionDias);
-
-    await pool.query(
-      'UPDATE usuarios SET membresia_id = ?, fecha_inicio_membresia = ?, fecha_fin_membresia = ? WHERE id = ?',
-      [membresiaId, fechaInicio, fechaFin, usuarioId]
-    );
-
     res.status(201).json({
       mensaje: 'Pago registrado y membresía actualizada exitosamente',
       pagoId: result.insertId,
